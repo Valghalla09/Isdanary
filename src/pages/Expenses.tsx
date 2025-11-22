@@ -71,7 +71,7 @@ function ExpensesPage() {
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h3 className="text-sm font-medium text-accent">Add a new expense</h3>
-            <p className="mt-1 text-xs text-slate-600">
+            <p className="mt-1 text-xs text-textMuted">
               Keep amounts realistic. You can adjust or delete entries later.
             </p>
           </div>
@@ -94,18 +94,18 @@ function ExpensesPage() {
           className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-4"
         >
           <div className="space-y-1 sm:col-span-2">
-            <label className="text-xs font-medium text-slate-700">Description</label>
+            <label className="text-xs font-medium text-textDark">Description</label>
             <input
               type="text"
               value={label}
               onChange={(e) => setLabel(e.target.value)}
               placeholder="e.g. Diesel for boat, Ice blocks, Boat repair"
-              className="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+              className="w-full rounded-md border border-muted bg-card px-3 py-2 text-sm text-textDark outline-none focus:border-primary focus:ring-1 focus:ring-primary"
               disabled={submitting}
             />
           </div>
           <div className="space-y-1">
-            <label className="text-xs font-medium text-slate-700">Amount (₱)</label>
+            <label className="text-xs font-medium text-textDark">Amount (₱)</label>
             <input
               type="number"
               min={0}
@@ -116,16 +116,16 @@ function ExpensesPage() {
                 if (value === '') setAmount('');
                 else setAmount(Number(value));
               }}
-              className="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+              className="w-full rounded-md border border-muted bg-card px-3 py-2 text-sm text-textDark outline-none focus:border-primary focus:ring-1 focus:ring-primary"
               disabled={submitting}
             />
           </div>
           <div className="space-y-1">
-            <label className="text-xs font-medium text-slate-700">Category</label>
+            <label className="text-xs font-medium text-textDark">Category</label>
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value as ExpenseCategory)}
-              className="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+              className="w-full rounded-md border border-muted bg-card px-3 py-2 text-sm text-textDark outline-none focus:border-primary focus:ring-1 focus:ring-primary"
               disabled={submitting}
             >
               {Object.entries(CATEGORY_LABELS).map(([value, label]) => (
@@ -149,9 +149,9 @@ function ExpensesPage() {
         </div>
         <div className="overflow-hidden rounded-xl border border-accent/10 bg-card">
           {loading ? (
-            <div className="px-4 py-4 text-xs text-slate-600">Loading expenses...</div>
+            <div className="px-4 py-4 text-xs text-textMuted">Loading expenses...</div>
           ) : expenses.length === 0 ? (
-            <div className="px-4 py-4 text-xs text-slate-600">
+            <div className="px-4 py-4 text-xs text-textMuted">
               No expenses recorded yet. Add your first expense using the form above.
             </div>
           ) : (
@@ -168,14 +168,14 @@ function ExpensesPage() {
               <tbody className="divide-y divide-accent/10 bg-card">
                 {expenses.map((expense) => (
                   <tr key={expense.id}>
-                    <td className="px-3 py-2 text-slate-700">
+                    <td className="px-3 py-2 text-textMuted">
                       {new Date(expense.createdAt).toLocaleString()}
                     </td>
-                    <td className="px-3 py-2 text-slate-800">{expense.label}</td>
-                    <td className="px-3 py-2 text-slate-800">
+                    <td className="px-3 py-2 text-textDark">{expense.label}</td>
+                    <td className="px-3 py-2 text-textDark">
                       {CATEGORY_LABELS[expense.category] ?? expense.category}
                     </td>
-                    <td className="px-3 py-2 text-right text-slate-800">
+                    <td className="px-3 py-2 text-right text-textDark">
                       ₱{expense.amount.toFixed(2)}
                     </td>
                     <td className="px-3 py-2 text-right">

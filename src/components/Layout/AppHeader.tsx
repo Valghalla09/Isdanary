@@ -1,6 +1,5 @@
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import ThemeToggle from '../UI/ThemeToggle';
 import Button from '../UI/Button';
 
 interface AppHeaderProps {
@@ -21,12 +20,12 @@ function AppHeader({ onMenuClick }: AppHeaderProps) {
   };
 
   return (
-    <header className="flex items-center justify-between border-b border-accent/40 bg-card px-4 py-3 backdrop-blur dark:border-slate-800 dark:bg-slate-950/80 sm:px-6 lg:px-8">
+    <header className="flex items-center justify-between border-b border-accent/40 bg-card px-4 py-3 backdrop-blur sm:px-6 lg:px-8">
       <div className="flex items-center gap-6">
         <div className="flex items-center gap-2">
           <button
             type="button"
-            className="rounded-md p-2 text-textDark hover:bg-muted hover:text-textDark dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-slate-100 lg:hidden"
+            className="rounded-md p-2 text-textDark hover:bg-muted hover:text-textDark lg:hidden"
             onClick={onMenuClick}
             aria-label="Toggle navigation"
           >
@@ -36,7 +35,7 @@ function AppHeader({ onMenuClick }: AppHeaderProps) {
           </button>
           <Link
             to="/dashboard"
-            className="flex items-center gap-2 text-textDark no-underline dark:text-slate-100"
+            className="flex items-center gap-2 text-textDark no-underline"
           >
             <img
               src="/logo.jpg"
@@ -45,7 +44,7 @@ function AppHeader({ onMenuClick }: AppHeaderProps) {
             />
             <div className="flex flex-col">
               <span className="text-sm font-semibold sm:text-base">IsdaNary</span>
-              <span className="text-xs text-slate-500 dark:text-slate-400 sm:text-sm">
+              <span className="text-xs text-textMuted sm:text-sm">
                 Fisheries Management System
               </span>
             </div>
@@ -103,12 +102,9 @@ function AppHeader({ onMenuClick }: AppHeaderProps) {
         </nav>
       </div>
       <div className="flex items-center gap-3">
-        <ThemeToggle />
         {user ? (
           <div className="flex items-center gap-2">
-            <span className="hidden text-xs text-slate-600 dark:text-slate-300 sm:inline">
-              {user.email}
-            </span>
+            <span className="hidden text-xs text-textMuted sm:inline">{user.email}</span>
             <Button
               type="button"
               variant="outline"
@@ -122,7 +118,7 @@ function AppHeader({ onMenuClick }: AppHeaderProps) {
           <div className="flex items-center gap-2">
             <Link
               to="/login"
-              className="text-xs text-slate-700 hover:text-primary dark:text-slate-300 dark:hover:text-primary"
+              className="text-xs text-textMuted hover:text-primary"
             >
               Log in
             </Link>

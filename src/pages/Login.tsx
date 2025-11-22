@@ -45,34 +45,31 @@ function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4 py-8 dark:bg-slate-950">
-      <div className="w-full max-w-md rounded-xl border border-muted bg-card p-6 shadow-lg dark:border-slate-800 dark:bg-slate-900">
+    <div className="flex min-h-screen items-center justify-center bg-background px-4 py-8">
+      <div className="w-full max-w-md rounded-xl border border-muted bg-card p-6 shadow-lg">
         <div className="mb-4 flex flex-col items-center text-center">
           <img
             src="/logo.jpg"
             alt="IsdaNary logo"
             className="h-14 w-14 rounded-full object-cover shadow-sm"
           />
-          <h1 className="mt-2 text-xl font-semibold text-textDark dark:text-slate-100">IsdaNary</h1>
-          <p className="text-xs text-textMuted dark:text-slate-400">
+          <h1 className="mt-2 text-xl font-semibold text-textDark">IsdaNary</h1>
+          <p className="text-xs text-textMuted">
             Fisheries Management System
           </p>
         </div>
-        <h2 className="text-base font-semibold text-textDark dark:text-slate-100">Log in</h2>
-        <p className="mt-1 text-sm text-textMuted dark:text-slate-400">
+        <h2 className="text-base font-semibold text-textDark">Log in</h2>
+        <p className="mt-1 text-sm text-textMuted">
           Access your IsdaNary dashboard.
         </p>
         {error && (
-          <div className="mt-4 rounded-md border border-rose-400 bg-rose-50 px-3 py-2 text-sm text-rose-700 dark:border-rose-500 dark:bg-rose-950/40 dark:text-rose-100">
+          <div className="mt-4 rounded-md border border-rose-400 bg-rose-50 px-3 py-2 text-sm text-rose-700">
             {error}
           </div>
         )}
         <form onSubmit={handleSubmit} className="mt-4 space-y-4">
           <div className="space-y-1">
-            <label
-              htmlFor="email"
-              className="text-xs font-medium text-textDark dark:text-slate-200"
-            >
+            <label htmlFor="email" className="text-xs font-medium text-textDark">
               Email
             </label>
             <input
@@ -82,14 +79,11 @@ function LoginPage() {
               required
               value={email}
               onChange={(event) => setEmail(event.target.value)}
-              className="w-full rounded-md border border-muted bg-card px-3 py-2 text-sm text-textDark outline-none focus:border-primary focus:ring-1 focus:ring-primary dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
+              className="w-full rounded-md border border-muted bg-card px-3 py-2 text-sm text-textDark outline-none focus:border-primary focus:ring-1 focus:ring-primary"
             />
           </div>
           <div className="space-y-1">
-            <label
-              htmlFor="password"
-              className="text-xs font-medium text-textDark dark:text-slate-200"
-            >
+            <label htmlFor="password" className="text-xs font-medium text-textDark">
               Password
             </label>
             <div className="relative">
@@ -100,12 +94,12 @@ function LoginPage() {
                 required
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
-                className="w-full rounded-md border border-muted bg-card px-3 py-2 pr-14 text-sm text-textDark outline-none focus:border-primary focus:ring-1 focus:ring-primary dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
+                className="w-full rounded-md border border-muted bg-card px-3 py-2 pr-14 text-sm text-textDark outline-none focus:border-primary focus:ring-1 focus:ring-primary"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword((prev) => !prev)}
-                className="absolute inset-y-0 right-3 flex items-center text-textMuted hover:text-textDark dark:text-slate-400 dark:hover:text-slate-100"
+                className="absolute inset-y-0 right-3 flex items-center text-textMuted hover:text-textDark"
                 aria-label={showPassword ? 'Hide password' : 'Show password'}
               >
                 {showPassword ? (
@@ -146,7 +140,7 @@ function LoginPage() {
             {submitting ? 'Logging in...' : 'Log in'}
           </Button>
         </form>
-        <p className="mt-4 text-xs text-textMuted dark:text-slate-400">
+        <p className="mt-4 text-xs text-textMuted">
           Don&apos;t have an account?{' '}
           <Link to="/signup" className="font-medium text-primary hover:text-primaryDark">
             Sign up

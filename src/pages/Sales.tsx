@@ -96,11 +96,11 @@ function SalesPage() {
 
         <form onSubmit={handleSubmit} className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           <div className="space-y-1 sm:col-span-2">
-            <label className="text-xs font-medium text-slate-700">Product</label>
+            <label className="text-xs font-medium text-textDark">Product</label>
             <select
               value={productId}
               onChange={(e) => setProductId(e.target.value)}
-              className="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+              className="w-full rounded-md border border-muted bg-card px-3 py-2 text-sm text-textDark outline-none focus:border-primary focus:ring-1 focus:ring-primary"
               disabled={loadingProducts || products.length === 0 || submitting}
             >
               <option value="">Select a product</option>
@@ -113,19 +113,19 @@ function SalesPage() {
           </div>
 
           <div className="space-y-1">
-            <label className="text-xs font-medium text-slate-700">Quantity</label>
+            <label className="text-xs font-medium text-textDark">Quantity</label>
             <input
               type="number"
               min={1}
               value={quantity}
               onChange={(e) => setQuantity(Number(e.target.value) || 0)}
-              className="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+              className="w-full rounded-md border border-muted bg-card px-3 py-2 text-sm text-textDark outline-none focus:border-primary focus:ring-1 focus:ring-primary"
               disabled={submitting}
             />
           </div>
 
           <div className="space-y-1">
-            <label className="text-xs font-medium text-slate-700">Discount (%)</label>
+            <label className="text-xs font-medium text-textDark">Discount (%)</label>
             <input
               type="number"
               min={0}
@@ -139,15 +139,15 @@ function SalesPage() {
                   setDiscountPercent(Number(value));
                 }
               }}
-              className="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+              className="w-full rounded-md border border-muted bg-card px-3 py-2 text-sm text-textDark outline-none focus:border-primary focus:ring-1 focus:ring-primary"
               disabled={submitting}
             />
           </div>
 
           <div className="space-y-1">
-            <label className="text-xs font-medium text-slate-700">Estimated total</label>
-            <div className="flex items-center justify-between rounded-md border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900">
-              <span className="text-xs text-slate-500">₱</span>
+            <label className="text-xs font-medium text-textDark">Estimated total</label>
+            <div className="flex items-center justify-between rounded-md border border-muted bg-card px-3 py-2 text-sm text-textDark">
+              <span className="text-xs text-textMuted">₱</span>
               <span className="font-semibold">
                 {computedTotal > 0 ? computedTotal.toFixed(2) : '0.00'}
               </span>
@@ -168,9 +168,9 @@ function SalesPage() {
         </div>
         <div className="overflow-hidden rounded-xl border border-accent/10 bg-card">
           {loadingSales ? (
-            <div className="px-4 py-4 text-xs text-slate-600">Loading sales...</div>
+            <div className="px-4 py-4 text-xs text-textMuted">Loading sales...</div>
           ) : sales.length === 0 ? (
-            <div className="px-4 py-4 text-xs text-slate-600">
+            <div className="px-4 py-4 text-xs text-textMuted">
               No sales recorded yet. Add your first sale using the form above.
             </div>
           ) : (
@@ -187,12 +187,12 @@ function SalesPage() {
               <tbody className="divide-y divide-accent/10 bg-card">
                 {sales.map((sale) => (
                   <tr key={sale.id}>
-                    <td className="px-3 py-2 text-slate-700">
+                    <td className="px-3 py-2 text-textMuted">
                       {new Date(sale.createdAt).toLocaleString()}
                     </td>
-                    <td className="px-3 py-2 text-slate-800">{sale.productName}</td>
-                    <td className="px-3 py-2 text-right text-slate-800">{sale.quantity}</td>
-                    <td className="px-3 py-2 text-right text-slate-800">
+                    <td className="px-3 py-2 text-textDark">{sale.productName}</td>
+                    <td className="px-3 py-2 text-right text-textDark">{sale.quantity}</td>
+                    <td className="px-3 py-2 text-right text-textDark">
                       ₱{sale.totalPrice.toFixed(2)}
                     </td>
                     <td className="px-3 py-2 text-right">

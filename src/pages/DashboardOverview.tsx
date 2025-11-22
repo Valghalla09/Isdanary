@@ -27,7 +27,7 @@ function StatCard({ title, description, value, loading }: StatCardProps) {
   return (
     <div className="rounded-xl border border-muted bg-card px-4 py-4 text-textDark shadow-sm">
       <p className="text-xs font-medium uppercase tracking-wide text-textMuted">{title}</p>
-      <div className="mt-3 text-sm text-slate-700">
+      <div className="mt-3 text-sm text-textMuted">
         <span className="inline-flex items-center rounded-full bg-primary/10 px-2 py-1 text-[11px] font-medium text-textDark">
           {pillText}
         </span>
@@ -50,7 +50,7 @@ function QuickActionCard({ title, description, to }: QuickActionCardProps) {
       className="group flex flex-col justify-between rounded-xl border border-accent/15 bg-white/90 px-4 py-4 text-left shadow-sm transition hover:border-primary hover:bg-muted"
     >
       <p className="text-sm font-medium text-textDark group-hover:text-primary">{title}</p>
-      <p className="mt-1 text-xs text-slate-600">{description}</p>
+      <p className="mt-1 text-xs text-textMuted">{description}</p>
     </Link>
   );
 }

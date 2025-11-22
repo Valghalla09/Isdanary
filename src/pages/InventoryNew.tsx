@@ -265,7 +265,7 @@ function InventoryPage() {
       </section>
 
       {modalOpen && (
-        <div className="fixed inset-0 z-20 flex items-center justify-center bg-slate-900/50 px-4 py-8">
+        <div className="fixed inset-0 z-20 flex items-center justify-center bg-textDark/40 px-4 py-8">
           <div className="w-full max-w-lg rounded-xl border border-muted bg-card p-5 text-sm text-textDark shadow-xl">
             <div className="flex items-center justify-between gap-2">
               <div>
