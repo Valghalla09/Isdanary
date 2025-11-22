@@ -34,17 +34,22 @@ function AppHeader({ onMenuClick }: AppHeaderProps) {
             <span className="mt-1 block h-0.5 w-5 bg-current" />
             <span className="mt-1 block h-0.5 w-5 bg-current" />
           </button>
-          <div>
-            <Link
-              to="/dashboard"
-              className="text-sm font-semibold text-textDark dark:text-slate-100 sm:text-base"
-            >
-              IsdaNary
-            </Link>
-            <p className="text-xs text-slate-500 dark:text-slate-400 sm:text-sm">
-              Fisheries Management System
-            </p>
-          </div>
+          <Link
+            to="/dashboard"
+            className="flex items-center gap-2 text-textDark no-underline dark:text-slate-100"
+          >
+            <img
+              src="/logo.jpg"
+              alt="IsdaNary logo"
+              className="h-8 w-8 rounded-full object-cover shadow-sm sm:h-9 sm:w-9"
+            />
+            <div className="flex flex-col">
+              <span className="text-sm font-semibold sm:text-base">IsdaNary</span>
+              <span className="text-xs text-slate-500 dark:text-slate-400 sm:text-sm">
+                Fisheries Management System
+              </span>
+            </div>
+          </Link>
         </div>
         <nav className="hidden gap-4 text-sm font-medium text-textMuted sm:flex">
           <NavLink
