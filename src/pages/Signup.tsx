@@ -57,9 +57,20 @@ function SignupPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4 py-8 dark:bg-slate-950">
       <div className="w-full max-w-md rounded-xl border border-muted bg-card p-6 shadow-lg dark:border-slate-800 dark:bg-slate-900">
-        <h1 className="text-xl font-semibold text-textDark dark:text-slate-100">
+        <div className="mb-4 flex flex-col items-center text-center">
+          <img
+            src="/logo.jpg"
+            alt="IsdaNary logo"
+            className="h-12 w-12 rounded-full object-cover shadow-sm"
+          />
+          <h1 className="mt-2 text-xl font-semibold text-textDark dark:text-slate-100">IsdaNary</h1>
+          <p className="text-xs text-textMuted dark:text-slate-400">
+            Fisheries Management System
+          </p>
+        </div>
+        <h2 className="text-base font-semibold text-textDark dark:text-slate-100">
           Create account
-        </h1>
+        </h2>
         <p className="mt-1 text-sm text-textMuted dark:text-slate-400">
           Set up your IsdaNary shop owner account.
         </p>
