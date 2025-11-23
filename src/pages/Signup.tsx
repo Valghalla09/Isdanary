@@ -63,9 +63,9 @@ function SignupPage() {
           <img
             src="/logo.jpg"
             alt="IsdaNary logo"
-            className="h-16 w-16 rounded-full object-cover shadow-sm"
+            className="h-24 w-24 rounded-full object-cover shadow-sm"
           />
-          <h1 className="mt-2 text-2xl font-semibold text-primary">IsdaNary</h1>
+          <h1 className="mt-2 text-2xl font-bold text-primary">IsdaNary</h1>
           <p className="text-xs text-textMuted">
             Fisheries Management System
           </p>
