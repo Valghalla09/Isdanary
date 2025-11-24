@@ -8,6 +8,7 @@ export type ExpenseCategory =
 
 export interface Expense {
   id: string;
+  ownerId?: string;
   label: string;
   amount: number;
   category: ExpenseCategory;

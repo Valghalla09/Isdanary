@@ -1,5 +1,6 @@
 export interface Sale {
   id: string;
+  ownerId?: string;
   productId: string;
   productName: string;
   quantity: number;

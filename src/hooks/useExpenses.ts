@@ -8,9 +8,11 @@ import {
   onSnapshot,
   orderBy,
   query,
+  where,
 } from 'firebase/firestore';
 import { db } from '../services/firebase';
 import { Expense, NewExpense } from '../types/expense';
+import { useAuth } from '../context/AuthContext';
 
 function mapExpense(id: string, data: any): Expense {
   const createdAt =
@@ -18,6 +20,7 @@ function mapExpense(id: string, data: any): Expense {
 
   return {
     id,
+    ownerId: data.ownerId ? String(data.ownerId) : undefined,
     label: String(data.label ?? ''),
     amount: Number(data.amount ?? 0),
     category: (data.category ?? 'other') as Expense['category'],
@@ -29,9 +32,20 @@ export function useExpenses() {
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { user } = useAuth();
 
   useEffect(() => {
-    const q = query(collection(db, 'expenses'), orderBy('createdAt', 'desc'));
+    if (!user) {
+      setExpenses([]);
+      setLoading(false);
+      return;
+    }
+
+    const q = query(
+      collection(db, 'expenses'),
+      where('ownerId', '==', user.uid),
+      orderBy('createdAt', 'desc'),
+    );
 
     const unsubscribe = onSnapshot(
       q,
@@ -50,13 +64,17 @@ export function useExpenses() {
     );
 
     return unsubscribe;
-  }, []);
+  }, [user]);
 
   const addExpense = async (payload: NewExpense) => {
     setError(null);
+    if (!user) {
+      throw new Error('You must be logged in to add expenses.');
+    }
     const now = Date.now();
     await addDoc(collection(db, 'expenses'), {
       ...payload,
+      ownerId: user.uid,
       createdAt: now,
     });
   };

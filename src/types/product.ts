@@ -1,5 +1,6 @@
 export interface Product {
   id: string;
+  ownerId?: string;
   name: string;
   category: string;
   currentStock: number;
@@ -8,4 +9,4 @@ export interface Product {
   reorderLevel: number;
 }
 
-export type NewProduct = Omit<Product, 'id'>;
+export type NewProduct = Omit<Product, 'id' | 'ownerId'>;
