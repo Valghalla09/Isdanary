@@ -7,6 +7,7 @@ export interface Product {
   price: number;
   supplier: string;
   reorderLevel: number;
+  createdAt: number;
 }
 
-export type NewProduct = Omit<Product, 'id' | 'ownerId'>;
+export type NewProduct = Omit<Product, 'id' | 'ownerId' | 'createdAt'>;

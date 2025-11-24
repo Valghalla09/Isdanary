@@ -39,7 +39,11 @@ export function useProducts(): UseProductsResult {
     setLoading(true);
 
     const productsRef = collection(db, 'products');
-    const q = query(productsRef, where('ownerId', '==', user.uid), orderBy('name'));
+    const q = query(
+      productsRef,
+      where('ownerId', '==', user.uid),
+      orderBy('createdAt', 'desc'),
+    );
 
     const unsubscribe = onSnapshot(
       q,
@@ -55,6 +59,7 @@ export function useProducts(): UseProductsResult {
             price: Number(raw.price ?? 0),
             supplier: String(raw.supplier ?? ''),
             reorderLevel: Number(raw.reorderLevel ?? 0),
+            createdAt: Number(raw.createdAt ?? 0),
           };
         });
 
@@ -77,9 +82,11 @@ export function useProducts(): UseProductsResult {
       if (!user) {
         throw new Error('You must be logged in to create products.');
       }
+      const now = Date.now();
       await addDoc(collection(db, 'products'), {
         ...input,
         ownerId: user.uid,
+        createdAt: now,
       });
     } catch (err) {
       console.error('Error creating product', err);

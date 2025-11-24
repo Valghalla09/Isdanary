@@ -27,6 +27,7 @@ function InventoryPage() {
   const { products, loading, error, createProduct, updateProduct, deleteProduct } = useProducts();
 
   const [search, setSearch] = useState('');
+  const [sortDirection, setSortDirection] = useState<'newest' | 'oldest'>('newest');
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState<Product | null>(null);
   const [form, setForm] = useState<ProductFormState>(createEmptyForm());
@@ -51,15 +52,26 @@ function InventoryPage() {
 
   const filteredProducts = useMemo(() => {
     const term = search.trim().toLowerCase();
-    if (!term) return products;
-    return products.filter((product) => {
-      return (
-        product.name.toLowerCase().includes(term) ||
-        product.category.toLowerCase().includes(term) ||
-        product.supplier.toLowerCase().includes(term)
-      );
+
+    let result = products;
+    if (term) {
+      result = products.filter((product) => {
+        return (
+          product.name.toLowerCase().includes(term) ||
+          product.category.toLowerCase().includes(term) ||
+          product.supplier.toLowerCase().includes(term)
+        );
+      });
+    }
+
+    const sorted = [...result].sort((a, b) => {
+      const aTime = a.createdAt ?? 0;
+      const bTime = b.createdAt ?? 0;
+      return sortDirection === 'newest' ? bTime - aTime : aTime - bTime;
     });
-  }, [products, search]);
+
+    return sorted;
+  }, [products, search, sortDirection]);
 
   const openAddModal = () => {
     setEditing(null);
@@ -194,7 +206,17 @@ function InventoryPage() {
               className="w-full rounded-md border border-muted bg-card px-3 py-2 text-sm text-textDark outline-none focus:border-primary focus:ring-1 focus:ring-primary"
             />
           </div>
-          <div className="flex justify-end">
+          <div className="flex items-center justify-end gap-2">
+            <Button
+              type="button"
+              variant="ghost"
+              className="px-3 py-1 text-xs"
+              onClick={() =>
+                setSortDirection((prev) => (prev === 'newest' ? 'oldest' : 'newest'))
+              }
+            >
+              {sortDirection === 'newest' ? 'Newest first' : 'Oldest first'}
+            </Button>
             <Button type="button" onClick={openAddModal}>
               Add product
             </Button>
