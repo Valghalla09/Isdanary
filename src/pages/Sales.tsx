@@ -2,16 +2,18 @@ import { FormEvent, useMemo, useState } from 'react';
 import Button from '../components/UI/Button';
 import { useProducts } from '../hooks/useProducts';
 import { useSales } from '../hooks/useSales';
+import type { Sale } from '../types/sale';
 
 function SalesPage() {
   const { products, loading: loadingProducts } = useProducts();
-  const { sales, loading: loadingSales, error, addSale, deleteSale } = useSales();
+  const { sales, loading: loadingSales, error, addSale, updateSale, deleteSale } = useSales();
 
   const [productId, setProductId] = useState('');
   const [quantity, setQuantity] = useState(1);
   const [discountPercent, setDiscountPercent] = useState<number | ''>('');
   const [submitting, setSubmitting] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
+  const [editingSale, setEditingSale] = useState<Sale | null>(null);
 
   const selectedProduct = useMemo(
     () => products.find((p) => p.id === productId) ?? null,
@@ -25,6 +27,23 @@ function SalesPage() {
     const factor = discount > 0 ? 1 - discount / 100 : 1;
     return Math.max(0, base * factor);
   }, [selectedProduct, quantity, discountPercent]);
+
+  const resetForm = () => {
+    setProductId('');
+    setQuantity(1);
+    setDiscountPercent('');
+    setFormError(null);
+    setEditingSale(null);
+  };
+
+  const startEditSale = (sale: Sale) => {
+    setEditingSale(sale);
+    setProductId(sale.productId);
+    setQuantity(sale.quantity);
+    setDiscountPercent(
+      typeof sale.discountPercent === 'number' ? sale.discountPercent : '',
+    );
+  };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -47,15 +66,27 @@ function SalesPage() {
 
     try {
       setSubmitting(true);
-      await addSale({
-        productId: selectedProduct.id,
-        productName: selectedProduct.name,
-        quantity,
-        totalPrice: computedTotal,
-        discountPercent: typeof discountPercent === 'number' ? discountPercent : undefined,
-      });
-      setQuantity(1);
-      setDiscountPercent('');
+      if (editingSale) {
+        await updateSale(editingSale.id, {
+          productId: selectedProduct.id,
+          productName: selectedProduct.name,
+          quantity,
+          totalPrice: computedTotal,
+          ...(typeof discountPercent === 'number'
+            ? { discountPercent }
+            : {}),
+        });
+      } else {
+        await addSale({
+          productId: selectedProduct.id,
+          productName: selectedProduct.name,
+          quantity,
+          totalPrice: computedTotal,
+          discountPercent:
+            typeof discountPercent === 'number' ? discountPercent : undefined,
+        });
+      }
+      resetForm();
     } catch (err) {
       console.error('Error recording sale', err);
       setFormError('Unable to record sale. Please try again.');
@@ -83,9 +114,13 @@ function SalesPage() {
       </section>
 
       <section className="rounded-xl border border-accent/15 bg-card px-4 py-4 text-sm shadow-sm">
-        <h3 className="text-sm font-medium text-textDark">Record a new sale</h3>
+        <h3 className="text-sm font-medium text-textDark">
+          {editingSale ? 'Edit sale' : 'Record a new sale'}
+        </h3>
         <p className="mt-1 text-xs text-textMuted">
-          Choose a product and quantity. You can optionally apply a discount.
+          {editingSale
+            ? 'Update the product, quantity, or discount for this sale.'
+            : 'Choose a product and quantity. You can optionally apply a discount.'}
         </p>
 
         {(formError || error) && (
@@ -154,9 +189,24 @@ function SalesPage() {
             </div>
           </div>
 
-          <div className="sm:col-span-2 lg:col-span-4 flex items-center justify-end">
+          <div className="sm:col-span-2 lg:col-span-4 flex items-center justify-end gap-2">
+            {editingSale && (
+              <Button
+                type="button"
+                variant="ghost"
+                className="px-3 py-1 text-xs"
+                onClick={resetForm}
+                disabled={submitting}
+              >
+                Cancel
+              </Button>
+            )}
             <Button type="submit" disabled={submitting || !selectedProduct || !quantity}>
-              {submitting ? 'Saving...' : 'Record sale'}
+              {submitting
+                ? 'Saving...'
+                : editingSale
+                ? 'Save changes'
+                : 'Record sale'}
             </Button>
           </div>
         </form>
@@ -202,14 +252,24 @@ function SalesPage() {
                       ₱{sale.totalPrice.toFixed(2)}
                     </td>
                     <td className="px-3 py-2 text-right">
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        className="px-2 py-1 text-[11px]"
-                        onClick={() => handleDelete(sale.id)}
-                      >
-                        Delete
-                      </Button>
+                      <div className="inline-flex items-center gap-2">
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          className="px-2 py-1 text-[11px]"
+                          onClick={() => startEditSale(sale)}
+                        >
+                          Edit
+                        </Button>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          className="px-2 py-1 text-[11px]"
+                          onClick={() => handleDelete(sale.id)}
+                        >
+                          Delete
+                        </Button>
+                      </div>
                     </td>
                   </tr>
                 ))}

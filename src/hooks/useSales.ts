@@ -9,6 +9,7 @@ import {
   orderBy,
   query,
   where,
+  updateDoc,
 } from 'firebase/firestore';
 import { db } from '../services/firebase';
 import { NewSale, Sale } from '../types/sale';
@@ -90,6 +91,18 @@ export function useSales() {
     await addDoc(collection(db, 'sales'), data);
   };
 
+  const updateSale = async (id: string, payload: Partial<NewSale>) => {
+    setError(null);
+    const { discountPercent, ...rest } = payload;
+    const data: Record<string, unknown> = { ...rest };
+
+    if (discountPercent !== undefined) {
+      data.discountPercent = discountPercent;
+    }
+
+    await updateDoc(doc(db, 'sales', id), data);
+  };
+
   const deleteSale = async (id: string) => {
     setError(null);
     await deleteDoc(doc(db, 'sales', id));
@@ -100,6 +113,7 @@ export function useSales() {
     loading,
     error,
     addSale,
+    updateSale,
     deleteSale,
   };
 }

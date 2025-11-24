@@ -9,6 +9,7 @@ import {
   orderBy,
   query,
   where,
+  updateDoc,
 } from 'firebase/firestore';
 import { db } from '../services/firebase';
 import { Expense, NewExpense } from '../types/expense';
@@ -79,6 +80,11 @@ export function useExpenses() {
     });
   };
 
+  const updateExpense = async (id: string, payload: Partial<NewExpense>) => {
+    setError(null);
+    await updateDoc(doc(db, 'expenses', id), payload);
+  };
+
   const deleteExpense = async (id: string) => {
     setError(null);
     await deleteDoc(doc(db, 'expenses', id));
@@ -91,6 +97,7 @@ export function useExpenses() {
     loading,
     error,
     addExpense,
+    updateExpense,
     deleteExpense,
     totalThisMonth,
   };

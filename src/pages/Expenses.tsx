@@ -1,7 +1,7 @@
 import { FormEvent, useState } from 'react';
 import Button from '../components/UI/Button';
 import { useExpenses } from '../hooks/useExpenses';
-import type { ExpenseCategory } from '../types/expense';
+import type { Expense, ExpenseCategory } from '../types/expense';
 
 const CATEGORY_LABELS: Record<ExpenseCategory, string> = {
   fuel: 'Fuel',
@@ -13,13 +13,29 @@ const CATEGORY_LABELS: Record<ExpenseCategory, string> = {
 };
 
 function ExpensesPage() {
-  const { expenses, loading, error, addExpense, deleteExpense, totalThisMonth } = useExpenses();
+  const { expenses, loading, error, addExpense, updateExpense, deleteExpense, totalThisMonth } = useExpenses();
 
   const [label, setLabel] = useState('');
   const [amount, setAmount] = useState<number | ''>('');
   const [category, setCategory] = useState<ExpenseCategory>('other');
   const [submitting, setSubmitting] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
+  const [editing, setEditing] = useState<Expense | null>(null);
+
+  const resetForm = () => {
+    setLabel('');
+    setAmount('');
+    setCategory('other');
+    setFormError(null);
+    setEditing(null);
+  };
+
+  const startEditExpense = (expense: Expense) => {
+    setEditing(expense);
+    setLabel(expense.label);
+    setAmount(expense.amount);
+    setCategory(expense.category);
+  };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -38,10 +54,16 @@ function ExpensesPage() {
 
     try {
       setSubmitting(true);
-      await addExpense({ label: label.trim(), amount: numericAmount, category });
-      setLabel('');
-      setAmount('');
-      setCategory('other');
+      if (editing) {
+        await updateExpense(editing.id, {
+          label: label.trim(),
+          amount: numericAmount,
+          category,
+        });
+      } else {
+        await addExpense({ label: label.trim(), amount: numericAmount, category });
+      }
+      resetForm();
     } catch (err) {
       console.error('Error adding expense', err);
       setFormError('Unable to add expense. Please try again.');
@@ -70,7 +92,9 @@ function ExpensesPage() {
       <section className="rounded-xl border border-accent/15 bg-card px-4 py-4 text-sm shadow-sm">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h3 className="text-sm font-medium text-accent">Add a new expense</h3>
+            <h3 className="text-sm font-medium text-accent">
+              {editing ? 'Edit expense' : 'Add a new expense'}
+            </h3>
             <p className="mt-1 text-xs text-textMuted">
               Keep amounts realistic. You can adjust or delete entries later.
             </p>
@@ -135,9 +159,20 @@ function ExpensesPage() {
               ))}
             </select>
           </div>
-          <div className="sm:col-span-2 lg:col-span-4 flex items-center justify-end">
+          <div className="sm:col-span-2 lg:col-span-4 flex items-center justify-end gap-2">
+            {editing && (
+              <Button
+                type="button"
+                variant="ghost"
+                className="px-3 py-1 text-xs"
+                onClick={resetForm}
+                disabled={submitting}
+              >
+                Cancel
+              </Button>
+            )}
             <Button type="submit" disabled={submitting}>
-              {submitting ? 'Saving...' : 'Add expense'}
+              {submitting ? 'Saving...' : editing ? 'Save changes' : 'Add expense'}
             </Button>
           </div>
         </form>
@@ -179,14 +214,24 @@ function ExpensesPage() {
                       ₱{expense.amount.toFixed(2)}
                     </td>
                     <td className="px-3 py-2 text-right">
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        className="px-2 py-1 text-[11px]"
-                        onClick={() => handleDelete(expense.id)}
-                      >
-                        Delete
-                      </Button>
+                      <div className="inline-flex items-center gap-2">
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          className="px-2 py-1 text-[11px]"
+                          onClick={() => startEditExpense(expense)}
+                        >
+                          Edit
+                        </Button>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          className="px-2 py-1 text-[11px]"
+                          onClick={() => handleDelete(expense.id)}
+                        >
+                          Delete
+                        </Button>
+                      </div>
                     </td>
                   </tr>
                 ))}
