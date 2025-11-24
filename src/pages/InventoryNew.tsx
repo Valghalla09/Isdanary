@@ -328,13 +328,16 @@ function InventoryPage() {
               </div>
               <div className="space-y-1">
                 <label className="text-xs font-medium text-textDark">Category</label>
-                <input
-                  type="text"
+                <select
                   value={form.category}
                   onChange={(e) => handleChange('category', e.target.value)}
                   className="w-full rounded-md border border-muted bg-card px-3 py-2 text-sm text-textDark outline-none focus:border-primary focus:ring-1 focus:ring-primary"
-                  placeholder="e.g. Fresh fish, Shellfish"
-                />
+                >
+                  <option value="Saltwater">Saltwater</option>
+                  <option value="Freshwater">Freshwater</option>
+                  <option value="Shellfish">Shellfish</option>
+                  <option value="Others">Others</option>
+                </select>
               </div>
               <div className="space-y-1">
                 <label className="text-xs font-medium text-textDark">Current stock</label>
