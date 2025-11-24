@@ -180,6 +180,7 @@ function SalesPage() {
                   <th className="px-3 py-2">Date</th>
                   <th className="px-3 py-2">Product</th>
                   <th className="px-3 py-2 text-right">Qty</th>
+                  <th className="px-3 py-2 text-right">Discount</th>
                   <th className="px-3 py-2 text-right">Total</th>
                   <th className="px-3 py-2"></th>
                 </tr>
@@ -192,6 +193,11 @@ function SalesPage() {
                     </td>
                     <td className="px-3 py-2 text-textDark">{sale.productName}</td>
                     <td className="px-3 py-2 text-right text-textDark">{sale.quantity}</td>
+                    <td className="px-3 py-2 text-right text-textMuted">
+                      {sale.discountPercent !== undefined && sale.discountPercent !== null
+                        ? `${sale.discountPercent}%`
+                        : '—'}
+                    </td>
                     <td className="px-3 py-2 text-right text-textDark">
                       ₱{sale.totalPrice.toFixed(2)}
                     </td>
