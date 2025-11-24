@@ -75,11 +75,19 @@ export function useSales() {
       throw new Error('You must be logged in to record sales.');
     }
     const now = Date.now();
-    await addDoc(collection(db, 'sales'), {
-      ...payload,
+    const { discountPercent, ...rest } = payload;
+
+    const data: Record<string, unknown> = {
+      ...rest,
       ownerId: user.uid,
       createdAt: now,
-    });
+    };
+
+    if (discountPercent !== undefined) {
+      data.discountPercent = discountPercent;
+    }
+
+    await addDoc(collection(db, 'sales'), data);
   };
 
   const deleteSale = async (id: string) => {
